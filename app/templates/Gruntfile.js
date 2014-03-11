@@ -444,8 +444,8 @@ module.exports = function (grunt) {
         'copy:dist',
         'rev',
         'usemin',
-        'htmlmin'//,
-        // 'embed:dist'
+        'htmlmin',
+        'embed:dist'
     ]);
 
     grunt.registerTask('default', [
