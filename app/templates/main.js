@@ -29,7 +29,7 @@ app.views.main.render = function() {
   * the iframe's explicitly defined dimensions (unless it's 0px).
 
   * For more, see code docs:
-  * /bower_compnents/ig-utils/js/iframe-utils.js
+  * /bower_components/ig-utils/js/iframe-utils.js
   */
   // iframeUtils.resizeZeroParentFrameValuesToContent();
 <% } %>
@@ -37,7 +37,9 @@ app.views.main.render = function() {
 };
 
 
-<% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {
+<% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
+  require('../bower_components/fastclick/lib/fastclick')(document.body);
+  <% } %>
 
   // Render the main view (see above)
   app.views.main.render();
