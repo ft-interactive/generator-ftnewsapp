@@ -261,35 +261,21 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
   this.indexFile = this.engine(this.indexFile, this);
 
-  var bowerComponentScripts = [
+  var scripts = [
     'bower_components/ig-fill/fill.js'
   ];
 
   if (this.flavour === 'vanilla') {
-    bowerComponentScripts.push('bower_components/domready/ready.js');
+    scripts.push('bower_components/domready/ready.js');
   }
-
-  var projectScripts = [];
 
   if (this.features.furniture) {
-    bowerComponentScripts.push('bower_components/ig-furniture/furniture.js');
+    scripts.push('bower_components/ig-furniture/furniture.js');
   }
 
-  if (this.projectType === 'embedded') {
-    bowerComponentScripts.push('bower_components/ig-utils/js/iframe-utils.js');
-  }
+  scripts.push('scripts/main-bundle.js');
 
-  projectScripts.push('scripts/main.js');
-
-  var scriptList;
-
-  if (this.features.handlebars) {
-    scriptList = bowerComponentScripts.concat(projectScripts);
-  } else {
-    scriptList = bowerComponentScripts.concat(projectScripts);
-  }
-
-  this.indexFile = this.appendFiles(this.indexFile, 'js', 'scripts/main.js', scriptList, null, ['.tmp', 'app']);
+  this.indexFile = this.appendFiles(this.indexFile, 'js', 'scripts/bottom.js', scripts, null, ['.tmp', 'app']);
 
   var indent = '        ';
 

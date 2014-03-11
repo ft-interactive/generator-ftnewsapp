@@ -153,7 +153,7 @@ module.exports = function (grunt) {
         browserify: {
             main: {
                 src: ['<%%= yeoman.app %>/scripts/main.js'],
-                dest: '.tmp/scripts/main.js',
+                dest: '.tmp/scripts/main-bundle.js',
                 options: {
                     debug: true<% if (features.handlebars) { %>,
                     transform: ['hbsfy'],<% } %>
