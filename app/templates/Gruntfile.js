@@ -141,7 +141,7 @@ module.exports = function (grunt) {
         sass: {
             main: {
                 files: {
-                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
+                    '.tmp/styles/main.css': '<%%= yeoman.app %>/styles/main.scss'
                 },
                 options: {
                     sourceComments: 'map',
