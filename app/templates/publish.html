@@ -1,0 +1,108 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Publish</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <style>
+            html, body{ background-color: #fff1e0; font-family: sans-serif;}
+            table{font-family:monospace;border-collapse: collapse;}
+            td, th{border:1px solid #a7a59b;border-spacing: 0;padding: .3em;}
+            th{text-align:right;}
+        </style>
+    </head>
+    <body style="overflow:hidden;">
+
+        <div class="outer-container">
+            <div id="main-content" role="main">
+                <div style="position:absolute;top:0;width:400px;bottom:0;right:0;border-left:1px solid #43423e;background-color:#e9decf;">
+                <button id="publish" style="font-size:2em;width:95%;margin:10px;float:left;">Publish</button>
+                <textarea id="embedcode" style="height:40px;margin:10px;float:left;min-width:100px;min-height:87px;width: 90%;font-family:monospace;"></textarea>
+                <div style="float:left;margin:10px;background-color:#fff;border:1px solid #43423e;padding:3px;">
+                    <strong>Methode iframe settings</strong>
+                <table>
+                    <tr>
+                        <th>src</th>
+                        <td id="src-attr"></td>
+                    </tr>
+                    <tr>
+                        <th>width</th>
+                        <td id="width-attr"></td>
+                    </tr>
+                    <tr>
+                        <th>height</th>
+                        <td id="height-attr"></td>
+                    </tr>
+                </table>
+                </div>
+                </div>
+                <div style="position:absolute;top:0px;left:0;bottom:0;right:401px;background-color:#fff1e0;padding:30px;overflow:scroll;">
+                    <div id="storyContent">
+                        <iframe  id="preview" src="index.html" frameborder="0" frameBorder="0" width="0" height="0" scrolling="no"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- build:js({.tmp,app}) scripts/publish.js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/ig-fill/fill.js"></script>
+        <script src="bower_components/bertha-ig-gist/request.js"></script>
+        <script src="bower_components/ig-utils/js/iframe-utils.js"></script>
+        <script src="scripts/config.js"></script>
+        <!-- endbuild -->
+
+        <script>
+            (function (window, $) {
+
+              'use strict';
+
+              IG.iframeUtils.setDocumentDomain();
+
+              var iframeSelector = '#preview';
+
+              function printEmbedCode() {
+                var loc = location.href;
+                var newloc = loc.replace('publish.html', '');
+
+                var iframeHTML = $($(iframeSelector)[0].outerHTML.replace('src="', 'src="' + newloc).replace(/id="(.[^<&"]+)"/, '').replace(/style="(.[^<&"]+)"/, ''));
+                $('#src-attr').text(iframeHTML.attr('src'));
+                $('#width-attr').text(iframeHTML.attr('width'));
+                $('#height-attr').text(iframeHTML.attr('height'));
+                $('#embedcode').val(iframeHTML[0].outerHTML)[0].select();
+              }
+
+              function republishDone () {
+                $(iframeSelector)[0].contentWindow.location.reload();
+                printEmbedCode();
+              }
+
+              $('#publish').on('click', function() {
+                var btn = $(this);
+                var o = $.extend(true, {}, app.spreadsheet.options, { method: 'republish'});
+
+                btn.attr('disabled', 'true');
+                var label = btn.text();
+                btn.text('Publishing...');
+
+                getIGSpreadsheet(app.spreadsheet.id, o)
+                                  .done(republishDone)
+                                  .always(function() {
+                                    btn.removeAttr('disabled');
+                                    btn.text(label);
+                                  });
+              });
+
+              $(function () {
+                printEmbedCode();
+              });
+
+            }(this, jQuery));
+        </script>
+    </body>
+</html>

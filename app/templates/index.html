@@ -1,0 +1,39 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="oldie m-root no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="oldie m-root no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="oldie m-root no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-oldie m-root no-js"><!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+        <!--#include virtual="/inc/extras-head-1.html" -->
+        <!-- build:css({.tmp,app}) styles/main.css --><% if (features.furniture) { %>
+        <link rel="stylesheet" href="bower_components/ig-furniture/furniture.css"><% } %>
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+        <!-- build:js({.tmp,app}) scripts/top.js -->
+        <script src="scripts/vendor/modernizr.js"></script>
+        <!-- endbuild --><% if (supportIE8) { %>
+        <!-- build:js({.tmp,app}) scripts/vendor/ie-lt9.js -->
+        <!--[if lt IE 9]>
+        <script src="bower_components/aight/aight.js"></script>
+        <![endif]-->
+        <!-- endbuild --><% } %>
+    </head>
+    <body>
+        <!--#include virtual="/inc/fallback.html" -->
+
+        <div id="main-content"></div><% if (features.furniture) { %>
+        <footer class="furniture hidden"></footer><% } %>
+
+        <!--#include virtual="/inc/extras-foot-1.html" --><% if (features.bertha) { %>
+        <script src="//bertha.ig.ft.com/view/publish/js/<%= spreadsheetId %>/basic?d=app.data"></script><% } %><% if (flavour === 'jquery') { %>
+        <!--[if lt IE 9]><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><![endif]-->
+        <!--[if gte IE 9]><!--><script src="//code.jquery.com/jquery-2.1.0.min.js"></script><!--<![endif]--><% } else if (flavour === 'd3') { %>
+        <script src="//www.ft.com/ig/js/d3-3.4.3.min.js"></script><% } %>
+    </body>
+</html>
