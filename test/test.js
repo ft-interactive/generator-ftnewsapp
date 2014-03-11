@@ -12,7 +12,7 @@ describe('IG Job generator test', function () {
         return done(err);
       }
 
-      this.webapp = helpers.createGenerator('ig-job:app', [
+      this.webapp = helpers.createGenerator('ftnewsapp:app', [
         '../../app', [
           helpers.createDummyGenerator(),
           'mocha:app'

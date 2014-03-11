@@ -1,15 +1,15 @@
 {
-  "name": "generator-ig-job",
+  "name": "generator-ftnewsapp",
   "private": true,
   "version": "0.2.0",
   "description": "Default IG generator for scaffolding out an interactive",
-  "homepage": "https://github.com/ft-interactive/generator-ig-job",
-  "bugs": "https://github.com/ft-interactive/generator-ig-job/issues",
+  "homepage": "https://github.com/ft-interactive/generator-ftnewsapp",
+  "bugs": "https://github.com/ft-interactive/generator-ftnewsapp/issues",
   "author": "FT Interactive",
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ft-interactive/generator-ig-job.git"
+    "url": "git://github.com/ft-interactive/generator-ftnewsapp.git"
   },
   "scripts": {
     "test": "mocha --reporter spec"
