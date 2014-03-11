@@ -56,7 +56,7 @@ AppGenerator.prototype.askFor = function askFor() {
 
   console.log(this.banner);
 
-  async.waterfall([
+  async.series([
 
     function typePrompt(done) {
       generator.prompt([{
