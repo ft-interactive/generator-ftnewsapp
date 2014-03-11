@@ -40,13 +40,9 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
-            compass: {
-                files: ['<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
-            },
             styles: {
-                files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
-                tasks: ['newer:copy:styles', 'autoprefixer']
+                files: ['<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                tasks: ['sass', 'autoprefixer']
             },
             livereload: {
                 options: {
@@ -123,9 +119,8 @@ module.exports = function (grunt) {
                 '<%%= yeoman.app %>/scripts/{,*/}*.js',
                 '!<%%= yeoman.app %>/scripts/vendor/*'
             ]
-        },
+        },<% if (testFramework === 'mocha') { %>
 
-<% if (testFramework === 'mocha') { %>
         // Mocha testing framework configuration options
         mocha: {
             all: {
@@ -142,29 +137,15 @@ module.exports = function (grunt) {
                 }
             }
         },<% } %>
-        compass: {
-            options: {
-                sassDir: '<%%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%%= yeoman.app %>/images',
-                javascriptsDir: '<%%= yeoman.app %>/scripts',
-                fontsDir: '<%%= yeoman.app %>/styles/fonts',
-                importPath: '<%%= yeoman.app %>/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
-                relativeAssets: false,
-                assetCacheBuster: false
-            },
-            dist: {
+
+        sass: {
+            main: {
+                files: {
+                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
+                },
                 options: {
-                    generatedImagesDir: '<%%= yeoman.dist %>/images/generated'
-                }
-            },
-            server: {
-                options: {
-                    debugInfo: true
+                    sourceComments: 'map',
+                    includePaths: ['app/bower_components/']
                 }
             }
         },
@@ -397,7 +378,7 @@ module.exports = function (grunt) {
         concurrent: {
             server: [
                 'browserify:main',
-                'compass:server',
+                'sass',
                 'copy:styles'
             ],
             test: [
@@ -405,7 +386,7 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'browserify:main',
-                'compass',
+                'sass',
                 'copy:styles',
                 'imagemin',
                 'svgmin'
