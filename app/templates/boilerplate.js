@@ -2,7 +2,7 @@
 
 'use strict';
 <% if (projectType === 'embedded') { %>
-var iframeUtils = require('../bower_components/ig-utils/js/iframe-utils');
+var iframeUtils = require('../../bower_components/ig-utils/js/iframe-utils');
 iframeUtils.setDocumentDomain();
 
 /**

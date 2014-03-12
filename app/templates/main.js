@@ -2,9 +2,9 @@
 
 'use strict';
 <% if (features.handlebars) { %>
-require('../bower_components/ig-utils/js/handlebars-utils');<% } %>
+require('../../bower_components/ig-utils/js/handlebars-utils');<% } %>
 require('./boilerplate');
-var iframeUtils = require('../bower_components/ig-utils/js/iframe-utils');
+// var iframeUtils = require('../../bower_components/ig-utils/js/iframe-utils');
 
 app.views.main.render = function() {
 
@@ -38,7 +38,7 @@ app.views.main.render = function() {
 
 
 <% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
-  require('../bower_components/fastclick/lib/fastclick')(document.body);
+  require('../../bower_components/fastclick/lib/fastclick')(document.body);
   <% } %>
 
   // Render the main view (see above)

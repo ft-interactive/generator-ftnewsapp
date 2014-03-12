@@ -2,4 +2,5 @@
 /dist/
 /.tmp/
 .igdeploy
-/app/bower_components
+/bower_components/
+/test/bower_components/
