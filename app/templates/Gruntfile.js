@@ -164,8 +164,8 @@ module.exports = function (grunt) {
                 src: ['<%%= config.app %>/scripts/main.js'],
                 dest: '.tmp/scripts/main-bundle.js',
                 options: {
-                    debug: true<% if (features.handlebars) { %>,
-                    transform: ['hbsfy'],<% } %>
+                    debug: true,
+                    transform: ['debowerify'<% if (features.handlebars) { %>, 'hbsfy'<% } %>],
                 }
             }
         },
