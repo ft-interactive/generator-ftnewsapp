@@ -176,14 +176,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // Automatically inject Bower components into the HTML file
-        'bower-install': {
-            app: {
-                html: '<%%= config.app %>/index.html',
-                ignorePath: '<%%= config.app %>/'
-            }
-        },
-
         uglify: {
             options: {
                 preserveComments: 'some'
