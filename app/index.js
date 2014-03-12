@@ -43,7 +43,7 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
     console.log(msg.join('\n   '));
   });
 
-  this.banner = this.readFileAsString(path.join(__dirname, 'BANNER'));
+  this.banner = chalk.gray(this.readFileAsString(path.join(__dirname, 'BANNER')));
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 };
