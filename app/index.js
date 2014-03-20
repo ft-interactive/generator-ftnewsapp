@@ -266,6 +266,7 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
 
   if (this.flavour === 'vanilla') {
     scripts.push('bower_components/domready/ready.js');
+    scripts.push('scripts/semicolon-hack.js');
   }
 
   if (this.features.furniture) {
@@ -324,8 +325,12 @@ AppGenerator.prototype.app = function app() {
 
   this.template('boilerplate.js', 'app/scripts/boilerplate.js');
   this.template('main.js', 'app/scripts/main.js');
-  this.copy('semicolon.js', 'app/scripts/semicolon.js'); // temporary hack
   this.template('modernizr.js', 'app/scripts/vendor/modernizr.js');
+
+  // temporary silly hack until this is fixed: https://github.com/yeoman/grunt-usemin/issues/312
+  if (this.flavour === 'vanilla') {
+    this.copy('semicolon-hack.js', 'app/scripts/semicolon-hack.js');
+  }
 };
 
 AppGenerator.prototype.install = function () {
