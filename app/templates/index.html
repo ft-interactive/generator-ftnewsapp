@@ -11,14 +11,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
         <!--#include virtual="/inc/extras-head-1.html" -->
-        <!-- build:css({.tmp,app}) styles/main.css --><% if (features.furniture) { %>
+        <!-- build:css({.tmp,app,.}) styles/main.css --><% if (features.furniture) { %>
         <link rel="stylesheet" href="bower_components/ig-furniture/furniture.css"><% } %>
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
-        <!-- build:js({.tmp,app}) scripts/top.js -->
+        <!-- build:js({.tmp,app,.}) scripts/top.js -->
         <script src="scripts/vendor/modernizr.js"></script>
         <!-- endbuild --><% if (supportIE8) { %>
-        <!-- build:js({.tmp,app}) scripts/vendor/ie-lt9.js -->
+        <!-- build:js({.tmp,app,.}) scripts/vendor/ie-lt9.js -->
         <!--[if lt IE 9]><script src="bower_components/aight/aight.js"></script><![endif]-->
         <!-- endbuild --><% } %>
     </head>

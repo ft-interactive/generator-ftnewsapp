@@ -274,7 +274,7 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
 
   scripts.push('scripts/main-bundle.js');
 
-  this.indexFile = this.appendFiles(this.indexFile, 'js', 'scripts/bottom.js', scripts, null, ['.tmp', 'app']);
+  this.indexFile = this.appendFiles(this.indexFile, 'js', 'scripts/bottom.js', scripts, null, ['.tmp', 'app', '.']);
 
   var indent = '        ';
 
@@ -324,6 +324,7 @@ AppGenerator.prototype.app = function app() {
 
   this.template('boilerplate.js', 'app/scripts/boilerplate.js');
   this.template('main.js', 'app/scripts/main.js');
+  this.copy('semicolon.js', 'app/scripts/semicolon.js'); // temporary hack
   this.template('modernizr.js', 'app/scripts/vendor/modernizr.js');
 };
 
