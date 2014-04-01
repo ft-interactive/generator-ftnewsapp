@@ -84,14 +84,12 @@ AppGenerator.prototype.askFor = function askFor() {
         message: 'Do you need to fully support IE8?',
         choices: [{
           name: 'Yes',
-          value: true,
           default: true
         }, {
-          name: 'No',
-          value: false
+          name: 'No'
         }]
       }], function (answers) {
-        generator.supportIE8 = answers.supportIE8;
+        generator.supportIE8 = (answers.supportIE8 === 'Yes');
         done();
       });
     },
@@ -107,7 +105,7 @@ AppGenerator.prototype.askFor = function askFor() {
       }];
 
       if (!generator.supportIE8) {
-        flavourOptions.shift({
+        flavourOptions.unshift({
           name: 'D3.js' + chalk.gray(' (IE9+)'),
           value: 'd3'
         });
