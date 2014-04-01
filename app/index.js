@@ -142,10 +142,7 @@ AppGenerator.prototype.askFor = function askFor() {
         type: 'checkbox',
         name: 'features',
         message: 'Which features do you need?',
-        choices: choices.filter(function (choice) {
-          // don't ask them about furniture if it's a microsite
-          return !(generator.projectType === 'microsite' && choice.value === 'furniture');
-        })
+        choices: choices)
       }], function (answers) {
 
         generator.features = {};
