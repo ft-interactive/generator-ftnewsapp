@@ -142,7 +142,7 @@ AppGenerator.prototype.askFor = function askFor() {
         type: 'checkbox',
         name: 'features',
         message: 'Which features do you need?',
-        choices: choices)
+        choices: choices
       }], function (answers) {
 
         generator.features = {};
