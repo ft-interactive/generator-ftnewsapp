@@ -22,7 +22,7 @@ app.views.furniture = {
     credits: [],
     footnotes: null
   },
-  render: function() {
+  render: function () {
 
     if (this.model) {
       Furniture.setCredits(this.model.credits);
