@@ -45,6 +45,7 @@ var md5 = function (str) {
   return hash.digest('hex');
 };
 
+
 // Establish all combinations of options
 var options = {
   projectType: ['embedded', 'microsite'],
@@ -72,6 +73,7 @@ options.projectType.forEach(function (projectType) {
   });
 });
 
+
 // Filter out impossible combinations
 combinations = combinations.filter(function (c) {
   return !(c.supportIE8 === true && c.flavour === 'd3');
@@ -79,15 +81,12 @@ combinations = combinations.filter(function (c) {
 console.log('Testing ' + combinations.length + ' combinations of options...');
 
 
-var generatorDir = path.resolve(__dirname, '..');
-
 // Set up the output directory structure
 var outputDir = path.join(__dirname, 'output');
 mkdirp.sync(path.join(outputDir, '_node_modules'));
 mkdirp.sync(path.join(outputDir, '_bower_components'));
 
 
-combinations = [combinations[30]]; // TEMP
 // Make a describe block for each option
 combinations.forEach(function (combo, i) {
   var comboId = md5(JSON.stringify(combo));
@@ -130,7 +129,7 @@ combinations.forEach(function (combo, i) {
       });
     });
 
-    // TESTS
+
     it('yo runs and exits without error', function () {
       expect(exitCode).to.equal(0);
     });
@@ -156,7 +155,6 @@ combinations.forEach(function (combo, i) {
         });
       });
 
-      // TESTS
 
       it('serves over port 9000', function (done) {
         this.timeout(false);
@@ -169,6 +167,7 @@ combinations.forEach(function (combo, i) {
       // TODO with Phantom
       it('Page has no JavaScript or download errors out-of-the-box');
       it('Editing scripts/main.js causes a LiveReload, and the edit works'); // append a console.log, then check it logs
+
 
       // Quit grunt serve afterwards
       after(function (done) {
