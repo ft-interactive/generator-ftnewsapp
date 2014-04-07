@@ -321,8 +321,8 @@ module.exports = function (grunt) {
                 baseURL: 'http://www.ft.com/ig/',
                 targetRoot: '/var/opt/customer/apps/interactive.ftdata.co.uk/var/www/html',
                 targets: {
-                    demo: '<%= deployBase %>/demo',
-                    live: '<%= deployBase %>/live'
+                    demo: 'demo/<%= deployBase %>',
+                    live: '<%= deployBase %>'
                 }
             }
         },
