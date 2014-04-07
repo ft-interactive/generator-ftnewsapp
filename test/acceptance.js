@@ -79,12 +79,7 @@ combinations = combinations.filter(function (c) {
 console.log('Testing ' + combinations.length + ' combinations of options...');
 
 
-// Symlink the generator into its own node_modules folder (so `yo ftnewsapp` resolves to this generator)
 var generatorDir = path.resolve(__dirname, '..');
-// var generatorModuleDir = path.join(generatorDir, 'node_modules', 'generator-ftnewsapp');
-// rimraf.sync(generatorModuleDir);
-// fs.symlinkSync(generatorDir, generatorModuleDir);
-
 
 // Set up the output directory structure
 var outputDir = path.join(__dirname, 'output');
@@ -118,7 +113,13 @@ combinations.forEach(function (combo, i) {
       });
 
       // Run the generator for this combo
-      var yo = spawn('yo', ['ftnewsapp', '--answers=' + JSON.stringify(combo)], {stdio: 'inherit'});
+      var yo = spawn('yo', [
+        'ftnewsapp',
+        '--no-insight',
+        '--answers=' + JSON.stringify(combo)
+      ], {
+        stdio: 'inherit'
+      });
       yo.on('error', function (err) {
         console.error('yo error', comboId, err);
         throw err;
