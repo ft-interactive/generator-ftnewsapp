@@ -83,15 +83,15 @@ console.log('Testing ' + combinations.length + ' combinations of options...');
 
 // Set up the output directory structure
 var outputDir = path.join(__dirname, 'output');
-mkdirp.sync(path.join(outputDir, '_node_modules'));
-mkdirp.sync(path.join(outputDir, '_bower_components'));
+mkdirp.sync(path.join(outputDir, 'node_modules'));
+mkdirp.sync(path.join(outputDir, 'bower_components'));
 
 
 // Make a describe block for each option
 combinations = [combinations[30]];
 combinations.forEach(function (combo, i) {
   var comboId = md5(JSON.stringify(combo));
-  var comboDir = path.join(outputDir, comboId);
+  var comboDir = path.join(outputDir, '_' + comboId);
 
   describe('Combination #' + i + ' "' + comboId + '"', function () {
     var exitCode;
@@ -109,7 +109,7 @@ combinations.forEach(function (combo, i) {
 
       // Symlink node_modules and bower_components into parent
       ['node_modules', 'bower_components'].forEach(function (dir) {
-        fs.symlinkSync(path.join('..', '_' + dir), dir);
+        fs.symlinkSync(path.join('..', dir), dir);
       });
 
       // Run the generator for this combo
@@ -149,7 +149,7 @@ combinations.forEach(function (combo, i) {
 
         var ready;
         gruntServe.stdout.on('data', function (data) {
-          console.log('STDOUT>\n' + data.toString() + '\n<STDOUT');
+          console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
 
           if (!ready && data.toString().trim() === 'Waiting...') {
             ready = true;
