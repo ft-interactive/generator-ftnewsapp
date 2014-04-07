@@ -141,7 +141,7 @@ combinations.forEach(function (combo, i) {
       // Start up grunt serve and phantom
       var gruntServe;
       before(function (done) {
-        this.timeout(false);
+        this.timeout(30000);
 
         gruntServe = spawn('grunt', ['serve'], {
           env: _.assign({}, process.env, {ENVIRONMENT: 'test'})
@@ -160,7 +160,8 @@ combinations.forEach(function (combo, i) {
 
 
       it('serves over port 9000', function (done) {
-        this.timeout(false);
+        this.timeout(5000);
+
         request('http://localhost:9000/', function (err, response, body) {
           expect(response.statusCode).to.equal(200);
           done();
