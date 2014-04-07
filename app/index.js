@@ -51,10 +51,29 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
 util.inherits(AppGenerator, yeoman.generators.Base);
 
 AppGenerator.prototype.askFor = function askFor() {
-  var generator = this;
-  var promptsDone = generator.async();
-
   console.log(this.banner);
+
+  var generator = this;
+  var gotAnswers = false;
+
+  process.argv.forEach(function (arg) {
+    if (arg.substring(0, 10) === '--answers=') {
+      var answers = JSON.parse(arg.substring(10));
+      console.log('Generating with answers:', JSON.stringify(answers, null, 2));
+
+      for (var choiceName in answers) {
+        if (answers.hasOwnProperty(choiceName)) {
+          generator[choiceName] = answers[choiceName];
+        }
+      }
+
+      gotAnswers = true;
+    }
+  });
+
+  if (gotAnswers) return;
+
+  var promptsDone = generator.async();
 
   async.series([
 
@@ -153,8 +172,6 @@ AppGenerator.prototype.askFor = function askFor() {
           );
         });
 
-        generator.includePublisher = (generator.features.bertha && generator.projectType === 'embedded');
-
         done();
       });
     },
@@ -211,6 +228,10 @@ AppGenerator.prototype.askFor = function askFor() {
     }
 
   ], promptsDone);
+};
+
+AppGenerator.prototype.processAnswers = function processAnswers() {
+  this.includePublisher = (this.features.bertha && this.projectType === 'embedded');
 };
 
 AppGenerator.prototype.gruntfile = function gruntfile() {

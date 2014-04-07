@@ -3,3 +3,4 @@ temp/
 todo.md
 .DS_Store
 npm-debug.log
+test/output/

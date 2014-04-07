@@ -68,7 +68,7 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                    open: true,
+                    open: (process.env.ENVIRONMENT !== 'test'),
                     middleware: [
                         function (req, res, next) {
                             if (req.url.substring(0,18) === '/bower_components/') {

@@ -27,7 +27,14 @@
     "yo": ">=1.0.0-rc.1.2"
   },
   "devDependencies": {
-    "mocha": "~1.9.0"
+    "mocha": "~1.17.1",
+    "lodash": "~2.4.1",
+    "rimraf": "~2.2.6",
+    "mkdirp": "~0.3.5",
+    "chai": "~1.9.0",
+    "request": "~2.34.0",
+    "grunt-cli": "~0.1.13",
+    "grunt": "~0.4.2"
   },
   "engines": {
     "node": ">=0.10.0",
