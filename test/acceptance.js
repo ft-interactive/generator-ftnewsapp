@@ -88,6 +88,7 @@ mkdirp.sync(path.join(outputDir, '_bower_components'));
 
 
 // Make a describe block for each option
+combinations = [combinations[30]];
 combinations.forEach(function (combo, i) {
   var comboId = md5(JSON.stringify(combo));
   var comboDir = path.join(outputDir, comboId);
@@ -148,7 +149,9 @@ combinations.forEach(function (combo, i) {
 
         var ready;
         gruntServe.stdout.on('data', function (data) {
-          if (!ready && data.toString() === 'Waiting...') {
+          console.log('STDOUT>\n' + data.toString() + '\n<STDOUT');
+
+          if (!ready && data.toString().trim() === 'Waiting...') {
             ready = true;
             done();
           }
