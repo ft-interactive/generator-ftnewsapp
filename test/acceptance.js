@@ -117,7 +117,7 @@ combinations.forEach(function (combo, i) {
         '--no-insight',
         '--answers=' + JSON.stringify(combo)
       ], {
-        stdio: 'inherit'
+        // stdio: 'inherit'
       });
       yo.on('error', function (err) {
         console.error('yo error', comboId, err);
@@ -148,7 +148,7 @@ combinations.forEach(function (combo, i) {
 
         var ready;
         gruntServe.stdout.on('data', function (data) {
-          console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
+          // console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
 
           if (!ready && data.toString().trim() === 'Waiting...') {
             ready = true;
