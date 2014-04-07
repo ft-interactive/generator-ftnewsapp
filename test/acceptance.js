@@ -143,7 +143,7 @@ combinations.forEach(function (combo, i) {
       before(function (done) {
         this.timeout(30000);
 
-        gruntServe = spawn('grunt', ['serve'], {
+        gruntServe = spawn('grunt', ['serve', '--stack'], {
           env: _.assign({}, process.env, {ENVIRONMENT: 'test'})
         });
 
