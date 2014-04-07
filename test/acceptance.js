@@ -118,7 +118,7 @@ combinations.forEach(function (combo, i) {
         '--no-insight',
         '--answers=' + JSON.stringify(combo)
       ], {
-        stdio: 'inherit'
+        // stdio: 'inherit'
       });
       yo.on('error', function (err) {
         console.error('yo error', comboId, err);
