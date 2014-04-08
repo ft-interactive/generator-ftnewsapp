@@ -10,11 +10,16 @@ var spawn = require('child_process').spawn;
 var _ = require('lodash');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
+var chalk = require('chalk');
 var request = require('request');
 var expect = require('chai').expect;
 
 
 // Helper functions
+var say = function (message) {
+  console.log(chalk.magenta(message));
+};
+
 var booleanCombinations = function (items) {
   var numFeatures = items.length;
   var numCombinations = Math.pow(2, numFeatures);
@@ -78,7 +83,7 @@ options.projectType.forEach(function (projectType) {
 combinations = combinations.filter(function (c) {
   return !(c.supportIE8 === true && c.flavour === 'd3');
 });
-console.log('Testing ' + combinations.length + ' combinations of options...');
+say('Testing ' + combinations.length + ' combinations of options...');
 
 
 // Set up the output directory structure
@@ -112,19 +117,29 @@ combinations.forEach(function (combo, i) {
       });
 
       // Run the generator for this combo
-      var yo = spawn('yo', [
+      var yoFlags = [
         'ftnewsapp',
         '--no-insight',
         '--answers=' + JSON.stringify(combo)
-      ], {
-        // stdio: 'inherit'
-      });
+      ];
+      say('Spawning: yo ' + yoFlags.join(' '));
+      var yo = spawn('yo', yoFlags, {/*stdio: 'inherit'*/});
+
+      var counter = 1;
+      var interval = setInterval(function () {
+        say('...yo has been running for ' + (counter++) + ' minutes...');
+      }, 60 * 1000);
+
       yo.on('error', function (err) {
         console.error('yo error', comboId, err);
         throw err;
       });
       yo.on('close', function (code) {
         exitCode = code;
+
+        clearInterval(interval);
+        say('yo exited with code ' + code);
+
         done();
       });
     });
@@ -142,7 +157,9 @@ combinations.forEach(function (combo, i) {
       before(function (done) {
         this.timeout(30000);
 
-        gruntServe = spawn('grunt', ['serve', '--stack'], {
+        var gruntFlags = ['serve', '--stack'];
+        say('Spawning: ENVIRONMENT=test grunt ' + gruntFlags.join(' '));
+        gruntServe = spawn('grunt', gruntFlags, {
           env: _.assign({}, process.env, {ENVIRONMENT: 'test'})
         });
 
@@ -175,6 +192,7 @@ combinations.forEach(function (combo, i) {
       // Quit grunt serve afterwards
       after(function (done) {
         gruntServe.on('close', function (code) {
+          say('grunt exited with code ' + code);
           done();
         });
 
