@@ -155,7 +155,7 @@ combinations.forEach(function (combo, i) {
       // Start up grunt serve and phantom
       var gruntServe;
       before(function (done) {
-        this.timeout(30000);
+        this.timeout(60000);
 
         var gruntFlags = ['serve', '--stack'];
         say('Spawning: ENVIRONMENT=test grunt ' + gruntFlags.join(' '));
@@ -176,7 +176,7 @@ combinations.forEach(function (combo, i) {
 
 
       it('serves over port 9000', function (done) {
-        this.timeout(5000);
+        this.timeout(20000);
 
         request('http://localhost:9000/', function (err, response, body) {
           expect(response.statusCode).to.equal(200);
@@ -191,6 +191,7 @@ combinations.forEach(function (combo, i) {
 
       // Quit grunt serve afterwards
       after(function (done) {
+        this.timeout(20000);
         gruntServe.on('close', function (code) {
           say('grunt exited with code ' + code);
           done();
