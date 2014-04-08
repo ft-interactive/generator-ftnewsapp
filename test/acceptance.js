@@ -123,7 +123,7 @@ combinations.forEach(function (combo, i) {
         '--answers=' + JSON.stringify(combo)
       ];
       say('Spawning: yo ' + yoFlags.join(' '));
-      var yo = spawn('yo', yoFlags, {/*stdio: 'inherit'*/});
+      var yo = spawn('yo', yoFlags, {stdio: 'inherit'});
 
       var counter = 1;
       var interval = setInterval(function () {
@@ -165,7 +165,7 @@ combinations.forEach(function (combo, i) {
 
         var ready;
         gruntServe.stdout.on('data', function (data) {
-          // console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
+          console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
 
           if (!ready && data.toString().trim() === 'Waiting...') {
             ready = true;
