@@ -28,9 +28,8 @@ var booleanCombinations = function (items) {
 
   while (i < numCombinations) {
     binary = i.toString(2);
-    while (binary.length < items.length) {
-      binary = '0' + binary;
-    }
+    while (binary.length < items.length) binary = '0' + binary;
+
     combo = {};
     j = 0;
     while (j < numFeatures) {
@@ -192,9 +191,13 @@ combinations.forEach(function (combo, i) {
       // Quit grunt serve afterwards
       after(function (done) {
         this.timeout(20000);
+
         gruntServe.on('close', function (code) {
           say('grunt exited with code ' + code);
-          done();
+
+          setTimeout(function () {
+            done();
+          }, 1000);
         });
 
         gruntServe.kill();
