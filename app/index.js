@@ -231,7 +231,7 @@ AppGenerator.prototype.bower = function bower() {
 };
 
 AppGenerator.prototype.jshint = function jshint() {
-  this.copy('jshintrc', '.jshintrc');
+  this.template('jshintrc', '.jshintrc');
 };
 
 AppGenerator.prototype.editorConfig = function editorConfig() {
