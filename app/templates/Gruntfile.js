@@ -34,7 +34,7 @@ module.exports = function (grunt) {
                     '<%%= config.app %>/scripts/{,*/}*.js',
                     '<%%= config.app %>/templates/{,*/}*.hbs'
                 ],
-                tasks: ['jshint', 'browserify:main'],
+                tasks: ['browserify:main'],
                 options: {
                     livereload: true
                 }
