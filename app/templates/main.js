@@ -1,55 +1,62 @@
-/*global app<% if (flavour !== 'jquery') { %>, domready<% } %> */
-
+/*global app<% if (flavour !== 'jquery') { %>, domready<% } %><% if (features.bertha) { %>, spreadsheet<% } %> */
 'use strict';
-<% if (features.handlebars) { %>
-require('ig-utils/js/handlebars-utils');<% } %>
-require('./boilerplate');
-// var iframeUtils = require('ig-utils/js/iframe-utils');
 
-app.views.main.render = function() {
-
-  var html = this.model ? <% if (features.handlebars) { %>this.template(this.model)<% } else { %>''<% } %> : this.messages.no_data;
-
-<% if (flavour === 'jquery') { %>
-  this.$el.html(html);
-<% } else { %>
-  this.el.innerHTML = html;
+<% if (features.furniture) { %>var Footer = require('ig-furniture/footer');
+<% } %><% if (features.handlebars) { %>
+require('ig-utils/js/handlebars-utils'); // registers some Handlebars helpers<% } %><% if (projectType === 'embedded') { %>
+var iframeUtils = require('ig-utils/js/iframe-utils');
+<% } %><% if (features.handlebars) { %>
+var mainTemplate = require('../templates/main.hbs');
 <% } %>
-<% if (projectType === 'embedded') { %>
-  /**
-  * IFRAME RESIZING OPTION 1
-  * Set the size of the iframe to equal the content of this page.
-  */
-  // iframeUtils.resizeParentFrameToContentSize();
 
-  /**
-  * IFRAME RESIZING OPTION 2
-  * Sets the size of the iframe along the sides
-  * that have not been set on the parent document - i.e it will never override
-  * the iframe's explicitly defined dimensions (unless it's 0px).
-
-  * For more, see code docs:
-  * /bower_components/ig-utils/js/iframe-utils.js
-  */
-  // iframeUtils.resizeZeroParentFrameValuesToContent();
-<% } %>
-  return this;
-};
-
+// Render the main HTML
+var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bertha) { %>spreadsheet<% } else { %>{
+  // data to pass into the template
+})<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
 
 <% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
-  require('fastclick')(document.body);
+
+  require('fastclick')(document.body); // see http://git.io/41U_6g
   <% } %>
 
-  // Render the main view (see above)
-  app.views.main.render();
+  // Display the main content<% if (flavour === 'jquery') { %>
+  $('#main-content').html(mainHTML);<% } else if (flavour === 'd3') { %>
+  d3.select('#main-content').html(mainHTML);<% } else { %>
+  document.getElementById('main-content').innerHTML = mainHTML;<% } %><% if (features.furniture) { %>
 
-  // Now the view has been rendered, unhide the content
-  // by removing the `invisible` class from the body.<% if (flavour === 'jquery') { %>
-  $('body').removeClass('invisible');
-  <% } else if (flavour === 'd3') { %>
-  d3.select('body').classed('invisible', false);
-  <% } else { %>
+  // Render and display the footer
+  var footerView = new Footer({
+    el: <% if (flavour === 'jquery') { %>$('.ig-footer')[0]<% } else if (flavour === 'd3') { %>d3.select('.ig-footer')[0][0]<% } else { %>document.getElementsByClassName('ig-footer')[0]<% } %>,
+    credits: <% if (features.bertha) { %>(spreadsheet.credits ? spreadsheet.credits : null)<% } else { %>[
+      {type: 'credit', name: 'Some Person', link: 'http://example.com/'},
+      {type: 'source', name: 'Some Source', link: 'http://example.com/'}
+    ]<% } %>,
+    footnotes: <% if (features.bertha) { %>(spreadsheet.options && spreadsheet.options.footnotes ? spreadsheet.options.footnotes : null)<% } else { %>'Some footnote.\nAnother footnote here.'<% } %>
+  });
+  if (spreadsheet.options && spreadsheet.options.graphictype) {
+    footerView.strings.graphicType = spreadsheet.options.graphictype;
+  }
+  footerView.render();
+  <% } %><% if (projectType === 'embedded') { %>
+
+  // Make sure all rendered links open in a new tab
+  iframeUtils.targetLinks('_blank');<%} %>
+
+  /* MAGIC GOES HERE */
+
+
+
+  // Now unhide everything by removing the `invisible` class from the body<% if (flavour === 'jquery') { %>
+  $('body').removeClass('invisible');<% } else if (flavour === 'd3') { %>
+  d3.select('body').classed('invisible', false);<% } else { %>
   document.body.className = document.body.className.replace(/\binvisible\b/, '');
-  <% } %>
+  <% } %><% if (projectType === 'embedded') { %>
+
+  // Resize the iframe to equal the content of this page
+  iframeUtils.resizeParentFrameToContentSize();
+
+  /*
+    Alternative iframe resizing method: iframeUtils.resizeZeroParentFrameValuesToContent();
+    This method sets the width and height attributes on the iframe, but only if they are currently empty/zero.
+  */<% } %>
 });

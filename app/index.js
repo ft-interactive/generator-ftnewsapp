@@ -244,7 +244,7 @@ AppGenerator.prototype.h5bp = function h5bp() {
 
 AppGenerator.prototype.mainStylesheet = function mainStylesheet() {
   this.copy('_var.scss', 'app/styles/_var.scss');
-  this.copy('main.scss', 'app/styles/main.scss');
+  this.template('main.scss', 'app/styles/main.scss');
 };
 
 AppGenerator.prototype.writeIndex = function writeIndex() {
@@ -263,9 +263,8 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
     scripts.push('bower_components/domready/ready.js');
     scripts.push('scripts/vendor/semicolon-hack.js');
   }
-
-  if (this.features.furniture) {
-    scripts.push('bower_components/ig-furniture/furniture.js');
+  else if (this.flavour === 'd3') {
+    scripts.push('bower_components/domready/ready.js');
   }
 
   scripts.push('scripts/main-bundle.js');
@@ -318,7 +317,6 @@ AppGenerator.prototype.app = function app() {
 
   this.mkdir('artwork');
 
-  this.template('boilerplate.js', 'app/scripts/boilerplate.js');
   this.template('main.js', 'app/scripts/main.js');
   this.template('modernizr.js', 'app/scripts/vendor/modernizr.js');
 

@@ -5,7 +5,7 @@
     "domready": <% if (supportIE8) { %>"~0.3.0"<% } else { %>"~1.0.4"<% } %>,<% } %><% if (supportIE8) { %>
     "aight": "~1.2.2",<% } %>
     "ig-fill": "https://gist.github.com/baa2d589782ec1eb4afc.git",<% if (features.furniture) { %>
-    "ig-furniture": "https://gist.github.com/375ebcf89f9aa70c0a1e.git",<% } %>
+    "ig-furniture": "https://github.com/ft-interactive/ig-furniture.git",<% } %>
     "ig-utils": "https://github.com/callumlocke/ig-utils.git",
     "minimal": "https://github.com/ft-interactive/minimal.git#1.0.0"<% if (projectType === 'microsite') { %>,
     "fastclick": "~1.0.0"<% } %>
