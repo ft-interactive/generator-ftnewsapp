@@ -16,7 +16,7 @@ var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bert
 
 <% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
 
-  require('fastclick')(document.body); // see http://git.io/41U_6g
+  require('fastclick')(document.body); // github.com/ftlabs/fastclick
   <% } %>
 
   // Display the main content<% if (flavour === 'jquery') { %>
