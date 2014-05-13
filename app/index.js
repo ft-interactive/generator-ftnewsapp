@@ -281,7 +281,8 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   ];
 
   if (this.flavour === 'vanilla') {
-    scripts.push('bower_components/domready/ready.js');
+    if (this.supportIE8) scripts.push('bower_components/domready-0.3/ready.js');
+    else scripts.push('bower_components/domready/ready.js');
     scripts.push('scripts/vendor/semicolon-hack.js');
   }
 

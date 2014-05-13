@@ -5,20 +5,23 @@
 
 var path = require('path');
 var fs = require('fs');
-var crypto = require('crypto');
-var spawn = require('child_process').spawn;
 var _ = require('lodash');
-var rimraf = require('rimraf');
-var mkdirp = require('mkdirp');
-var chalk = require('chalk');
 var request = require('request');
-var expect = require('chai').expect;
+var async = require('async');
+var chalk = require('chalk');
+var Promise = require('bluebird');
+var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
+var testGeneratedProject = require('./helpers/test-generated-project');
+var generateProject = require('./helpers/generate-project');
+var installDeps = require('./helpers/install-deps');
+var say = require('./helpers/say');
 
+
+var lrPort = 61000;
+var serverPort = 62000;
 
 // Helper functions
-var say = function (message) {
-  console.log(chalk.magenta(message));
-};
 
 var booleanCombinations = function (items) {
   var numFeatures = items.length;
@@ -43,11 +46,6 @@ var booleanCombinations = function (items) {
   return combinations;
 };
 
-var md5 = function (str) {
-  var hash = crypto.createHash('md5');
-  hash.update(str, 'utf8');
-  return hash.digest('hex');
-};
 
 
 // Establish all combinations of options
@@ -78,7 +76,10 @@ options.projectType.forEach(function (projectType) {
 });
 
 
-// Filter out impossible combinations
+combinations = combinations.slice(50, 52);
+
+
+// Filter out combinations that we don't support
 combinations = combinations.filter(function (c) {
   return !(c.supportIE8 === true && c.flavour === 'd3');
 });
@@ -87,122 +88,104 @@ say('Testing ' + combinations.length + ' combinations of options...');
 
 // Set up the output directory structure
 var outputDir = path.join(__dirname, 'output');
+// rimraf.sync(outputDir); // may disable in dev for speed
 mkdirp.sync(path.join(outputDir, 'node_modules'));
 mkdirp.sync(path.join(outputDir, 'bower_components'));
 
 
-// Make a describe block for each option
-combinations.forEach(function (combo, i) {
-  var comboId = md5(JSON.stringify(combo));
-  var comboDir = path.join(outputDir, '_' + comboId);
+// Make some lookup helper hashes
+var comboIds = _.map(combinations, function (combo) {
+  return JSON.stringify(_.omit(combo, 'spreadsheetId', 'deployBase'))
+    .replace(/[\{\}\"]/g, '')
+    .replace(/\:/g, '_');
+});
+var combosHash = _.zipObject(comboIds, combinations);
+var comboDirs = _.mapValues(combosHash, function (combo, comboId) {
+  return path.resolve(__dirname, 'output', '_' + comboId);
+});
+// console.log('combosHash', combosHash);
+// console.log('comboDirs', comboDirs);
 
-  describe('Combination #' + i + ' "' + comboId + '"', function () {
-    var exitCode;
 
-    before(function (done) {
-      this.timeout(false);
+// Run all the generators in parallel
+var throat4 = require('throat')(4);
+var generatorsRun = _.mapValues(combosHash, function (combo, comboId) {
+  return throat4(function () {
+    return generateProject(combo, comboDirs[comboId]);
+  });
+});
 
-      // Create/empty and change into the combo directory
-      rimraf.sync(comboDir);
-      mkdirp.sync(comboDir);
-      process.chdir(comboDir);
 
-      // Write the options to a file, for debugging
-      fs.writeFileSync('answers.json', JSON.stringify(combo, null, 2));
+// Install deps *one at a time* as soon as any generator is ready
+var throat1 = require('throat')(1);
+var depsInstalled = _.mapValues(combosHash, function (combo, comboId) {
+  return throat1(function () {
+    return generatorsRun[comboId].then(function () {
 
-      // Symlink node_modules and bower_components into parent
-      ['node_modules', 'bower_components'].forEach(function (dir) {
-        fs.symlinkSync(path.join('..', dir), dir);
-      });
+      return installDeps(comboDirs[comboId]);
 
-      // Run the generator for this combo
-      var yoFlags = [
-        'ftnewsapp',
-        '--no-insight',
-        '--answers=' + JSON.stringify(combo)
-      ];
-      say('Spawning: yo ' + yoFlags.join(' '));
-      var yo = spawn('yo', yoFlags, {stdio: 'inherit'});
-
-      var counter = 1;
-      var interval = setInterval(function () {
-        say('...yo has been running for ' + (counter++) + ' minutes...');
-      }, 60 * 1000);
-
-      yo.on('error', function (err) {
-        console.error('yo error', comboId, err);
-        throw err;
-      });
-      yo.on('close', function (code) {
-        exitCode = code;
-
-        clearInterval(interval);
-        say('yo exited with code ' + code);
-
-        done();
-      });
     });
+  });
+});
 
 
-    it('yo runs and exits without error', function () {
-      expect(exitCode).to.equal(0);
-    });
+// Whenever a given project's deps have installed, run tests for that project
+var testsRun = _.mapValues(combosHash, function (combo, comboId) {
 
-    it('No JSHint errors in any generated scripts, including Gruntfile');
+  return new Promise(function (resolve, reject) {
 
-    describe('grunt serve', function () {
-      // Start up grunt serve and phantom
-      var gruntServe;
-      before(function (done) {
-        this.timeout(60000);
+    // console.log('Waiting for depsInstall then running tests for: ', comboId);
 
-        var gruntFlags = ['serve', '--stack'];
-        say('Spawning: ENVIRONMENT=test grunt ' + gruntFlags.join(' '));
-        gruntServe = spawn('grunt', gruntFlags, {
-          env: _.assign({}, process.env, {ENVIRONMENT: 'test'})
-        });
+    depsInstalled[comboId].then(function () {
+      // console.log('\n\n\n\nRUNNING TEST', combo);
 
-        var ready;
-        gruntServe.stdout.on('data', function (data) {
-          console.log('STDOUT...\n' + data.toString() + '\n...STDOUT');
+      testGeneratedProject(comboDirs[comboId], comboId, combo).then(function (results) {
 
-          if (!ready && data.toString().trim() === 'Waiting...') {
-            ready = true;
-            done();
+        // Log all the results
+        var failuresToLog = [];
+        _.forOwn(results, function (result, description) {
+          if (result) {
+            failuresToLog.push(chalk.red(description) + '\n' + result.toString());
           }
         });
-      });
 
+        if (failuresToLog) {
+          console.log(chalk.red('\n\n===========================\nErrors for combo ') + chalk.cyan(comboId));
 
-      it('serves over port 9000', function (done) {
-        this.timeout(20000);
+          failuresToLog.forEach(function (msg) {
+            console.log('\n', msg);
+          });
+        }
 
-        request('http://localhost:9000/', function (err, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-
-      // TODO with Phantom
-      it('Page has no JavaScript or download errors out-of-the-box');
-      it('Editing scripts/main.js causes a LiveReload, and the edit works'); // append a console.log, then check it logs
-
-
-      // Quit grunt serve afterwards
-      after(function (done) {
-        this.timeout(20000);
-
-        gruntServe.on('close', function (code) {
-          say('grunt exited with code ' + code);
-
-          setTimeout(function () {
-            done();
-          }, 1000);
-        });
-
-        gruntServe.kill();
+        // Indicate this generated project has now been tested
+        console.log('This project has now been tested!');
+        resolve();
       });
     });
-
   });
+});
+
+
+// Wait till all tests have run before logging any failures and exiting
+Promise.props(testsRun).then(function (allResults) {
+  console.log('FINAL THING', allResults);
+
+  var failed;
+
+  _.forOwn(allResults, function (results, comboId) {
+    _.forOwn(results, function (failure, description) {
+
+      if (failure) {
+        console.error(description, result);
+        failed = true;
+      }
+
+    });
+  });
+
+  var code = failed ? 1 : 0;
+
+  console.log('Exiting with code ' + code);
+
+  process.exit(code);
 });
