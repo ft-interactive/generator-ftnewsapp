@@ -17,13 +17,15 @@ var generateProject = require('./helpers/generate-project');
 var installDeps = require('./helpers/install-deps');
 var say = require('./helpers/say');
 
+var webPort = 61000;
+var lrPort = 62000;
 
-var lrPort = 61000;
-var serverPort = 62000;
 
 // Helper functions
 
 var booleanCombinations = function (items) {
+  // Given an array of strings, returns an array of objects with the input strings as the keys and the values being true/false, in every possible combination.
+
   var numFeatures = items.length;
   var numCombinations = Math.pow(2, numFeatures);
   var combinations = [];
@@ -76,7 +78,7 @@ options.projectType.forEach(function (projectType) {
 });
 
 
-combinations = combinations.slice(50, 52);
+// combinations = combinations.slice(50, 56); // DEBUG
 
 
 // Filter out combinations that we don't support
@@ -111,7 +113,10 @@ var comboDirs = _.mapValues(combosHash, function (combo, comboId) {
 var throat4 = require('throat')(4);
 var generatorsRun = _.mapValues(combosHash, function (combo, comboId) {
   return throat4(function () {
-    return generateProject(combo, comboDirs[comboId]);
+    return generateProject(combo, comboDirs[comboId])
+      .catch(function (err) {
+        throw err;
+      });
   });
 });
 
@@ -133,13 +138,10 @@ var depsInstalled = _.mapValues(combosHash, function (combo, comboId) {
 var testsRun = _.mapValues(combosHash, function (combo, comboId) {
 
   return new Promise(function (resolve, reject) {
-
-    // console.log('Waiting for depsInstall then running tests for: ', comboId);
-
     depsInstalled[comboId].then(function () {
-      // console.log('\n\n\n\nRUNNING TEST', combo);
-
-      testGeneratedProject(comboDirs[comboId], comboId, combo).then(function (results) {
+      testGeneratedProject(
+        comboDirs[comboId], comboId, combo, webPort++, lrPort++
+      ).then(function (results) {
 
         // Log all the results
         var failuresToLog = [];
@@ -149,7 +151,8 @@ var testsRun = _.mapValues(combosHash, function (combo, comboId) {
           }
         });
 
-        if (failuresToLog) {
+        if (failuresToLog.length) {
+          // TODO: report nicely
           console.log(chalk.red('\n\n===========================\nErrors for combo ') + chalk.cyan(comboId));
 
           failuresToLog.forEach(function (msg) {
@@ -158,34 +161,34 @@ var testsRun = _.mapValues(combosHash, function (combo, comboId) {
         }
 
         // Indicate this generated project has now been tested
-        console.log('This project has now been tested!');
-        resolve();
+        resolve(results);
       });
     });
   });
 });
 
 
-// Wait till all tests have run before logging any failures and exiting
+// Wait till all tests have run before exiting
 Promise.props(testsRun).then(function (allResults) {
-  console.log('FINAL THING', allResults);
+  // console.log('allResults', allResults);
 
-  var failed;
-
-  _.forOwn(allResults, function (results, comboId) {
-    _.forOwn(results, function (failure, description) {
-
-      if (failure) {
-        console.error(description, result);
-        failed = true;
-      }
-
-    });
+  // See if any
+  var results = [];
+  _.forOwn(allResults, function (resultSet) {
+    results.push(_.values(resultSet));
+  });
+  var failures = _.flatten(results).filter(function (result) {
+    return result != null;
   });
 
-  var code = failed ? 1 : 0;
+  if (failures.length) {
+    console.log(results);
+    console.log(chalk.red('Completed tests with ' + chalk.bold(failures.length) + ' failures.'));
+  }
+  else {
+    console.log(chalk.green('No failures found.'));
+  }
 
-  console.log('Exiting with code ' + code);
 
-  process.exit(code);
+  process.exit(failures.length ? 1 : 0);
 });

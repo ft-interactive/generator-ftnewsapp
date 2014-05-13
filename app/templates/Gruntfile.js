@@ -36,7 +36,7 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['browserify:main'],
                 options: {
-                    livereload: true
+                    livereload: '<%%= connect.options.livereload %>'
                 }
             },
             gruntfile: {
@@ -62,8 +62,8 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 9000,
-                livereload: 35729,
+                port: grunt.option('port') || 9000,
+                livereload:  grunt.option('lrport') || 65729,
                 hostname: '0.0.0.0'
             },
             livereload: {

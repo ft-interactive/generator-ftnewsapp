@@ -53,9 +53,6 @@ module.exports = function (dir) {
       }
 
     ], function (err) {
-
-      console.log('DEPS INSTALLED! resolving if null:', err);
-
       if (err) reject(err);
       else resolve();
     });

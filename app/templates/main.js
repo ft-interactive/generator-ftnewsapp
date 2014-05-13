@@ -1,4 +1,3 @@
-/*global app<% if (flavour !== 'jquery') { %>, domready<% } %><% if (features.bertha) { %>, spreadsheet<% } %> */
 'use strict';
 
 <% if (features.furniture) { %>var Footer = require('ig-furniture/footer');
@@ -12,7 +11,7 @@ var mainTemplate = require('../templates/main.hbs');
 // Render the main HTML
 var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bertha) { %>spreadsheet<% } else { %>{
   // data to pass into the template
-})<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
+}<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
 
 <% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
 
@@ -32,10 +31,10 @@ var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bert
       {type: 'source', name: 'Some Source', link: 'http://example.com/'}
     ]<% } %>,
     footnotes: <% if (features.bertha) { %>(spreadsheet.options && spreadsheet.options.footnotes ? spreadsheet.options.footnotes : null)<% } else { %>'Some footnote.\nAnother footnote here.'<% } %>
-  });
+  });<% if (features.bertha) { %>
   if (spreadsheet.options && spreadsheet.options.graphictype) {
     footerView.strings.graphicType = spreadsheet.options.graphictype;
-  }
+  }<% } %>
   footerView.render();
   <% } %><% if (projectType === 'embedded') { %>
 

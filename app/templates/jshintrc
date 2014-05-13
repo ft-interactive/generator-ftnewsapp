@@ -3,6 +3,9 @@
     "browser": true,
     "globals": {
         <% if (flavour === 'd3') { %>"d3": true,
+        <% } %><% if (flavour === 'd3') { %>"d3": true,
+        <% } %><% if (flavour !== 'jquery') { %>"domready": true,
+        <% } %><% if (features.bertha) { %>"spreadsheet": true,
         <% } %>"IG": true
     },
     "esnext": true,

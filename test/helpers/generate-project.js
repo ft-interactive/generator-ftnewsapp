@@ -7,10 +7,9 @@ var fs = require('fs');
 var say = require('./say');
 
 
-
 module.exports = function (combo, dir) {
   return new Promise(function (resolve, reject) {
-      // Create/empty the target directory
+      // Empty the target directory
       rimraf.sync(dir);
       mkdirp.sync(dir);
 
@@ -44,8 +43,8 @@ module.exports = function (combo, dir) {
       });
       yo.on('close', function (code) {
         say('yo exited with code ' + code);
-
-        resolve();
+        if (code !== 0) reject(new Error('yo exited with code ' + code + ' in dir ' + dir));
+        else resolve();
       });
   });
 };
