@@ -1,3 +1,4 @@
 @import "ft-scss-variables/main";
 @import "var";
-@import "minimal/index";
+@import "minimal/index";<% if (features.furniture) { %>
+@import "ig-furniture/footer/style";<% } %>
