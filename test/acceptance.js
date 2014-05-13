@@ -18,7 +18,7 @@ var installDeps = require('./helpers/install-deps');
 var say = require('./helpers/say');
 
 var webPort = 61000;
-var lrPort = 62000;
+var lrPort = 61500;
 
 
 // Helper functions
@@ -110,9 +110,9 @@ var comboDirs = _.mapValues(combosHash, function (combo, comboId) {
 
 
 // Run all the generators in parallel
-var throat4 = require('throat')(4);
+var throat2 = require('throat')(2);
 var generatorsRun = _.mapValues(combosHash, function (combo, comboId) {
-  return throat4(function () {
+  return throat2(function () {
     return generateProject(combo, comboDirs[comboId])
       .catch(function (err) {
         throw err;
@@ -129,6 +129,8 @@ var depsInstalled = _.mapValues(combosHash, function (combo, comboId) {
 
       return installDeps(comboDirs[comboId]);
 
+    }).catch(function (err) {
+      throw err;
     });
   });
 });
