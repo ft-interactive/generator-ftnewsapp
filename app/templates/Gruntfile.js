@@ -5,12 +5,6 @@
 
 var connect = require('connect');
 
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
-
 module.exports = function (grunt) {
 
     // Load grunt tasks automatically
@@ -82,16 +76,6 @@ module.exports = function (grunt) {
                     ]
                 }
             },
-            test: {
-                options: {
-                    port: 9001,
-                    base: [
-                        '.tmp',
-                        'test',
-                        '<%%= config.app %>'
-                    ]
-                }
-            },
             dist: {
                 options: {
                     open: true,
@@ -128,24 +112,7 @@ module.exports = function (grunt) {
                 '<%%= config.app %>/scripts/{,*/}*.js',
                 '!<%%= config.app %>/scripts/vendor/*'
             ]
-        },<% if (testFramework === 'mocha') { %>
-
-        // Mocha testing framework configuration options
-        mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://<%%= connect.test.options.hostname %>:<%%= connect.test.options.port %>/index.html']
-                }
-            }
-        },<% } else if (testFramework === 'jasmine') { %>
-        jasmine: {
-            all: {
-                options: {
-                    specs: 'test/spec/{,*/}*.js'
-                }
-            }
-        },<% } %>
+        },
 
         sass: {
             main: {
@@ -389,9 +356,6 @@ module.exports = function (grunt) {
                 'sass',
                 'copy:styles'
             ],
-            test: [
-                'copy:styles'
-            ],
             dist: [
                 'browserify:main',
                 'sass',
@@ -427,22 +391,6 @@ module.exports = function (grunt) {
         grunt.task.run([target ? ('serve:' + target) : 'serve']);
     });
 
-    grunt.registerTask('test', function (target) {
-        if (target !== 'watch') {
-            grunt.task.run([
-                'clean:server',
-                'concurrent:test',
-                'autoprefixer'
-            ]);
-        }
-
-        grunt.task.run([
-            'connect:test',<% if (testFramework === 'mocha') { %>
-            'mocha'<% } else if (testFramework === 'jasmine') { %>
-            'jasmine'<% } %>
-        ]);
-    });
-
     grunt.registerTask('build', [
         'clean:dist',
         'useminPrepare',
@@ -460,7 +408,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'newer:jshint',
-    //    'test',
         'build'
     ]);
 

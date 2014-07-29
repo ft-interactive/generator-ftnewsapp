@@ -14,5 +14,4 @@ Example:
         package.json: Development packages installed by npm.
 
         app/: Your application files.
-        test/: Unit tests for your application.
         bower_components/: Downloaded dependencies - don't edit these files!
