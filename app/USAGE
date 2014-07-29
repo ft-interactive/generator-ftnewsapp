@@ -1,0 +1,18 @@
+Description:
+    Creates a new basic interactive using team best practices.
+
+Options:
+    Twitter Bootstrap: Include Twitter Bootstrap for Sass
+    RequireJS: Add support for AMD-loading via RequireJS
+
+Example:
+    yo ftnewsapp
+
+    This will create:
+        Gruntfile.js: Configuration for the task runner.
+        bower.json: Front-end packages installed by bower.
+        package.json: Development packages installed by npm.
+
+        app/: Your application files.
+        test/: Unit tests for your application.
+        bower_components/: Downloaded dependencies - don't edit these files!

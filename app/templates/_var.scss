@@ -1,0 +1,101 @@
+/**
+* Configure ft-scss-fontface
+*
+* More variables are available. Only the most useful
+* or commonly altered ones are shown below.
+*/
+
+// switch on/off custom font faces
+$ft-include-fontfaces:              true !default;
+
+// switch on/off sans-serif only fonts
+$ft-sans-only: false !default;
+
+// it's possible to switch on/off individual fonts
+$ft-include-miller-font:            true !default;
+$ft-include-benton-font:            true !default;
+$ft-include-clarion-font:           true !default;
+$ft-include-bentongraphics-font:    false !default;
+$ft-include-icon-font:              false !default;
+
+
+/**
+* Configure ft-scss-tools
+*
+*/
+
+// Base unit to calculate all font sizes and vertical rhythm.
+// All font sizes are mutiples of this. Used in combination
+// with the `base()` function and the `vertical` and `font-face`
+// mixins
+$base-font-size: 16px !default;
+
+// Used to (not) compile CSS defined
+// inside the `oldie` mixin
+$compile-oldie: true !default;
+
+// responsive breakpoints. Use in combination
+// with the `respond` mixin.
+$min-device-width:       320px !default;
+$tablet-device-width:    768px !default;
+$document-width:         972px !default;
+$max-device-width:       2880px !default;
+
+
+/**
+* Configure minimal
+*
+* Note there are a few variables you can configure here.
+* Only the most useful have been given below.
+* For more see minimal/_var.scss
+*
+* You'll notice all SASS variables defined by Minimal
+* begin with the `$m-` prefix.
+*
+*/
+// false, 'flex', 'page', 'rail', 'moreon', 'body', 'secondary'
+$m-container-width: 'page' !default;
+
+// adds the border above or below the interactive
+$m-top-border:      true !default;
+$m-bottom-border:   false !default;
+
+// px widths for the various container-widths
+$m-container-width-page:      $ft-falcon-page-width !default;
+$m-container-width-rail:      $ft-falcon-rail-width !default;
+$m-container-width-body:      $ft-falcon-body-width !default;
+$m-container-width-moreon:    $ft-falcon-moreon-width !default;
+$m-container-width-secondary: $ft-falcon-secondary-pic-width !default;
+
+$m-font-size-h1:              2    !default;
+$m-font-size-h2:              1.8  !default;
+$m-font-size-h3:              1.5  !default;
+$m-font-size-h4:              1.4  !default;
+$m-font-size-h5:              1.25 !default;
+$m-font-size-h6:              1    !default;
+$m-font-size-body:            1    !default;
+$m-font-size-body-small:      0.8  !default;
+$m-font-size-caption:         0.8  !default;
+$m-font-size-caption-small:   0.6  !default;
+
+$m-vertical-h1:                 1em !default;
+$m-vertical-h2:                 1em !default;
+$m-vertical-h3:                 1em !default;
+$m-vertical-h4:                 1em !default;
+$m-vertical-h5:                 1em !default;
+$m-vertical-h6:                 1em !default;
+$m-vertical-p:                  1em !default;
+$m-vertical-img:                1 !default;
+
+// font colors
+$m-font-color-header:         $ft-color-black-text !default;
+$m-font-color-header-muted:   $ft-color-black-text !default;
+$m-font-color-body:           $ft-color-black-text !default;
+$m-font-color-body-muted:     $ft-color-black-text !default;
+$m-font-color-caption:        $ft-color-black-text !default;
+$m-font-color-link:           $ft-color-linkblue-text !default;
+$m-font-color-link-hover:     $ft-color-black-text !default;
+
+// background colors
+$m-body-bg:                   $ft-color-primarypink !default;
+$m-panel-bg:                  $ft-color-tint1 !default;
