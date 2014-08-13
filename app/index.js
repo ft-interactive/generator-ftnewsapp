@@ -85,12 +85,12 @@ AppGenerator.prototype.askFor = function askFor() {
 
     function flavourPrompt(done) {
       var flavourOptions = [{
-        name: 'jQuery',
-        value: 'jquery',
-        default: true
-      }, {
         name: 'Vanilla JavaScript (no library)',
-        value: 'vanilla'
+        value: 'vanilla',
+        default: true
+      },{
+        name: 'jQuery',
+        value: 'jquery'
       }];
 
       if (!generator.supportIE8) {
