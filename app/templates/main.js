@@ -18,14 +18,12 @@ domReady(function () {<% if (projectType === 'microsite') { %>
   require('fastclick')(document.body); // github.com/ftlabs/fastclick
   <% } %>
 
-  // Display the main content<% if (flavour === 'jquery') { %>
-  $('#main-content').html(mainHTML);<% } else if (flavour === 'd3') { %>
-  d3.select('#main-content').html(mainHTML);<% } else { %>
-  document.getElementById('main-content').innerHTML = mainHTML;<% } %><% if (features.furniture) { %>
+  // Display the main content
+  document.getElementById('main-content').innerHTML = mainHTML;<% if (features.furniture) { %>
 
   // Render and display the footer
   var footerView = new Footer({
-    el: <% if (flavour === 'jquery') { %>$('.ig-footer')[0]<% } else if (flavour === 'd3') { %>d3.select('.ig-footer')[0][0]<% } else { %>document.getElementsByClassName('ig-footer')[0]<% } %>,
+    el: document.querySelectorAll('.ig-footer')[0],
     credits: <% if (features.bertha) { %>(spreadsheet.credits ? spreadsheet.credits : null)<% } else { %>[
       {type: 'credit', name: 'Some Person', link: 'http://example.com/'},
       {type: 'source', name: 'Some Source', link: 'http://example.com/'}
@@ -53,11 +51,9 @@ domReady(function () {<% if (projectType === 'microsite') { %>
   // Make sure all rendered links open in a new tab
   iframeUtils.targetLinks('_blank');<%} %>
 
-  // Now unhide everything by removing the `invisible` class from the body<% if (flavour === 'jquery') { %>
-  $('body').removeClass('invisible');<% } else if (flavour === 'd3') { %>
-  d3.select('body').classed('invisible', false);<% } else { %>
+  // Now unhide everything by removing the `invisible` class from the body
   document.body.className = document.body.className.replace(/\binvisible\b/, '');
-  <% } %><% if (projectType === 'embedded') { %>
+<% if (projectType === 'embedded') { %>
 
   // Resize the iframe to equal the content of this page
   iframeUtils.resizeParentFrameToContentSize();
