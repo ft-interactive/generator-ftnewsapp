@@ -13,7 +13,7 @@ var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bert
   // data to pass into the template
 })<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
 
-<% if (flavour === 'jquery') { %>$<% } else { %>domReady<% } %>(function () {<% if (projectType === 'microsite') { %>
+domReady(function () {<% if (projectType === 'microsite') { %>
 
   require('fastclick')(document.body); // github.com/ftlabs/fastclick
   <% } %>
