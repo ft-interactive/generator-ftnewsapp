@@ -1,5 +1,4 @@
-<% if (flavour !== 'jquery' || features.bertha) { %>/*global <% if (flavour !== 'jquery') { %>, domready<% } %><% if (features.bertha) { %>, spreadsheet<% } %> */
-<% } %>'use strict';
+'use strict';
 
 <% if (features.furniture) { %>var Footer = require('ig-furniture/footer');
 <% } %><% if (features.handlebars) { %>
@@ -14,7 +13,7 @@ var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bert
   // data to pass into the template
 })<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
 
-<% if (flavour === 'jquery') { %>$<% } else { %>domready<% } %>(function () {<% if (projectType === 'microsite') { %>
+<% if (flavour === 'jquery') { %>$<% } else { %>domReady<% } %>(function () {<% if (projectType === 'microsite') { %>
 
   require('fastclick')(document.body); // github.com/ftlabs/fastclick
   <% } %>

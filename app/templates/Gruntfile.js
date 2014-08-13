@@ -120,7 +120,7 @@ module.exports = function (grunt) {
                     '.tmp/styles/main.css': '<%%= config.app %>/styles/main.scss'
                 },
                 options: {
-                    loadPath: ['bower_components/'],
+                    loadPaths: ['bower_components/'],
                     sourcemap: true
                 }
             }

@@ -248,12 +248,8 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
     'bower_components/ig-fill/fill.js'
   ];
 
-  if (this.flavour === 'vanilla') {
-    scripts.push('bower_components/domready/ready.js');
-    scripts.push('scripts/vendor/semicolon-hack.js');
-  }
-  else if (this.flavour === 'd3') {
-    scripts.push('bower_components/domready/ready.js');
+  if (this.flavour !== 'jquery') {
+    scripts.push('bower_components/dom-ready/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js');
   }
 
   scripts.push('scripts/main-bundle.js');
@@ -308,11 +304,6 @@ AppGenerator.prototype.app = function app() {
 
   this.template('main.js', 'app/scripts/main.js');
   this.template('modernizr.js', 'app/scripts/vendor/modernizr.js');
-
-  // temporary silly hack until this is fixed: https://github.com/yeoman/grunt-usemin/issues/312
-  if (this.flavour === 'vanilla') {
-    this.copy('semicolon-hack.js', 'app/scripts/vendor/semicolon-hack.js');
-  }
 };
 
 AppGenerator.prototype.install = function () {
