@@ -1,13 +1,15 @@
 'use strict';
 
-<% if (features.furniture) { %>var Footer = require('ig-furniture/footer');
-<% } %><% if (features.handlebars) { %>
-require('ig-utils/js/handlebars-utils'); // registers some Handlebars helpers<% } %><% if (projectType === 'embedded') { %>
-var iframeUtils = require('ig-utils/js/iframe-utils');
-<% } %><% if (features.handlebars) { %>
+<% if (features.handlebars) { %>require('ig-utils/js/handlebars-utils'); // registers some Handlebars helpers<% } %><% if (features.furniture) { %>
+var Footer = require('ig-furniture/footer');<% } %><% if (projectType === 'embedded') { %>
+var iframeUtils = require('ig-utils/js/iframe-utils');<% } %><% if (features.handlebars) { %>
 var mainTemplate = require('../templates/main.hbs');
-<% } %>
+<% } %><% if (features.bertha) { %>
 
+spreadsheet.options = spreadsheet.options || {};
+spreadsheet.credits = spreadsheet.credits || null;
+
+<% } %>
 // Render the main HTML
 var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bertha) { %>spreadsheet<% } else { %>{
   // data to pass into the template
@@ -23,16 +25,14 @@ domReady(function () {<% if (projectType === 'microsite') { %>
 
   // Render and display the footer
   var footerView = new Footer({
-    el: document.querySelectorAll('.ig-footer')[0],
-    credits: <% if (features.bertha) { %>(spreadsheet.credits ? spreadsheet.credits : null)<% } else { %>[
+    el: document.body.querySelectorAll('.ig-footer')[0],
+    credits: <% if (features.bertha) { %>spreadsheet.credits<% } else { %>[
       {type: 'credit', name: 'Some Person', link: 'http://example.com/'},
       {type: 'source', name: 'Some Source', link: 'http://example.com/'}
     ]<% } %>,
-    footnotes: <% if (features.bertha) { %>(spreadsheet.options && spreadsheet.options.footnotes ? spreadsheet.options.footnotes : null)<% } else { %>'Some footnote.\nAnother footnote here.'<% } %>
+    footnotes: <% if (features.bertha) { %>(spreadsheet.options.footnotes || null)<% } else { %>null<% } %>
   });
-  if (spreadsheet.options && spreadsheet.options.graphictype) {
-    footerView.strings.graphicType = spreadsheet.options.graphictype;
-  }
+<% if (features.bertha) { %>  footerView.strings.graphicType = spreadsheet.options.graphictype || footerView.strings.graphicType;<% } %>
   footerView.render();
   <% } %>
 
@@ -52,8 +52,7 @@ domReady(function () {<% if (projectType === 'microsite') { %>
   iframeUtils.targetLinks('_blank');<%} %>
 
   // Now unhide everything by removing the `invisible` class from the body
-  document.body.className = document.body.className.replace(/\binvisible\b/, '');
-<% if (projectType === 'embedded') { %>
+  document.body.className = document.body.className.replace(/\binvisible\b/, '');<% if (projectType === 'embedded') { %>
 
   // Resize the iframe to equal the content of this page
   iframeUtils.resizeParentFrameToContentSize();
