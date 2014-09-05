@@ -249,7 +249,7 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   ];
 
   if (this.flavour !== 'jquery') {
-    scripts.push('bower_components/dom-ready/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js');
+    scripts.push('bower_components/dom-ready-alt/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js');
   }
 
   scripts.push('scripts/main-bundle.js');
