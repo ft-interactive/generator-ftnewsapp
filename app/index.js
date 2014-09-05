@@ -85,12 +85,12 @@ AppGenerator.prototype.askFor = function askFor() {
 
     function flavourPrompt(done) {
       var flavourOptions = [{
-        name: 'jQuery',
-        value: 'jquery',
-        default: true
-      }, {
         name: 'Vanilla JavaScript (no library)',
-        value: 'vanilla'
+        value: 'vanilla',
+        default: true
+      },{
+        name: 'jQuery',
+        value: 'jquery'
       }];
 
       if (!generator.supportIE8) {
@@ -245,7 +245,9 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   this.indexFile = this.engine(this.indexFile, this);
 
   var scripts = [
-    'bower_components/ig-fill/fill.js'
+    'bower_components/ig-fill/fill.js',
+    'bower_components/dom-ready/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js',
+    'scripts/main-bundle.js'
   ];
 
   if (this.flavour !== 'jquery') {
