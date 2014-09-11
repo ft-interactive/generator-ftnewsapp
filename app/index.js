@@ -244,14 +244,10 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
   this.indexFile = this.engine(this.indexFile, this);
 
-  var scripts = [
-    'bower_components/ig-fill/fill.js',
-    'bower_components/dom-ready/' + (this.supportIE8 ? 'legacy.js' : 'dom-ready.js'),
-    'scripts/main-bundle.js'
-  ];
+  var scripts = ['bower_components/ig-fill/fill.js'];
 
   if (this.flavour !== 'jquery') {
-    scripts.push('bower_components/dom-ready-alt/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js');
+    scripts.push('bower_components/dom-ready-alt/' + (this.supportIE8 ? 'legacy.js' : 'dom-ready.js'));
   }
 
   scripts.push('scripts/main-bundle.js');
