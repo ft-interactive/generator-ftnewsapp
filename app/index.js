@@ -246,7 +246,7 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
 
   var scripts = [
     'bower_components/ig-fill/fill.js',
-    'bower_components/dom-ready/' + this.supportIE8 ? 'legacy.js' : 'dom-ready.js',
+    'bower_components/dom-ready/' + (this.supportIE8 ? 'legacy.js' : 'dom-ready.js'),
     'scripts/main-bundle.js'
   ];
 
