@@ -2,7 +2,7 @@
   "name": "<%= _.slugify(appname) %>",
   "version": "0.0.0",
   "dependencies": {<% if (flavour !== 'jquery') { %>
-    "dom-ready-alt": "~0.0.1",<% } %><% if (supportIE8) { %>
+    "ondomready": "~1.4.0",<% } %><% if (supportIE8) { %>
     "aight": "~1.2.2",<% } %>
     "ig-fill": "https://gist.github.com/baa2d589782ec1eb4afc.git",<% if (features.furniture) { %>
     "ig-furniture": "https://github.com/ft-interactive/ig-furniture.git",<% } %>

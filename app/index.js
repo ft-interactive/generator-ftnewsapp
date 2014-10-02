@@ -247,7 +247,7 @@ AppGenerator.prototype.writeIndex = function writeIndex() {
   var scripts = ['bower_components/ig-fill/fill.js'];
 
   if (this.flavour !== 'jquery') {
-    scripts.push('bower_components/dom-ready-alt/' + (this.supportIE8 ? 'legacy.js' : 'dom-ready.js'));
+    scripts.push('bower_components/ondomready/ondomready.js');
   }
 
   scripts.push('scripts/main-bundle.js');

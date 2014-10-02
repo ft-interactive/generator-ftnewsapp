@@ -15,7 +15,7 @@ var mainHTML = <% if (features.handlebars) { %>mainTemplate(<% if (features.bert
   // data to pass into the template
 })<% } %>)<% } else { %>'<p>Some dynamic content</p>'<% } %>;
 
-domReady(function () {<% if (projectType === 'microsite') { %>
+onDomReady(function () {<% if (projectType === 'microsite') { %>
 
   require('fastclick')(document.body); // github.com/ftlabs/fastclick
   <% } %>

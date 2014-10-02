@@ -5,7 +5,7 @@
         <% if (flavour === 'd3') { %>"d3": true,
         <% } %>"IG": true<% if (features.bertha) { %>,
         "spreadsheet": true<% } %><% if (flavour !== 'jquery') { %>,
-        "domReady": true<% } %>
+        "onDomReady": true<% } %>
     },
     "esnext": true,
     "bitwise": true,
