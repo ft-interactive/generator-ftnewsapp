@@ -1,6 +1,6 @@
 {
   "name": "generator-ftnewsapp",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "FT generator for scaffolding an interactive graphic",
   "homepage": "https://github.com/ft-interactive/generator-ftnewsapp",
   "bugs": "https://github.com/ft-interactive/generator-ftnewsapp/issues",
