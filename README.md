@@ -27,17 +27,6 @@ Yeoman generator that scaffolds out an FT interactive graphic/news app.
   - If you're not sure what a component's name is, try searching: `bower search backbone`
 
 
-#### Updating Modernizr
-
-For performance, this generator gives you a minimal version of Modernizr. You'll need to rebuild it with extra bits if you need them. This is very easy:
-
-1. Look in `app/scripts/vendor/modernizr.js`, and you should find a URL in a comment at the top. Open this URL in your browser.
-2. Tick any extra features you need, then click 'Generate'.
-3. Copy and paste the generated script back into your own `modernizr.js` (overwriting it with the new contents).
-
-A later version of Modernizr is likely to provide a more automated solution for custom builds. But the current automated approach is problematic so it's best to do it manually.
-
-
 ### Deploying
 
 * Run `grunt build`, which creates an optimised version of your project in `dist`.

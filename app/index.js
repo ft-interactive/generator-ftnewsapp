@@ -301,7 +301,6 @@ AppGenerator.prototype.app = function app() {
   this.mkdir('artwork');
 
   this.template('main.js', 'app/scripts/main.js');
-  this.template('modernizr.js', 'app/scripts/vendor/modernizr.js');
 };
 
 AppGenerator.prototype.install = function () {
