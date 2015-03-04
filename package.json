@@ -1,7 +1,7 @@
 {
   "name": "generator-ftnewsapp",
   "description": "FT generator for scaffolding an interactive graphic",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "author": "FT Interactive",
   "bugs": "https://github.com/ft-interactive/generator-ftnewsapp/issues",
   "dependencies": {
@@ -15,7 +15,9 @@
   "devDependencies": {
     "mocha": "^2.1.0"
   },
-  "files": ["app"],
+  "files": [
+    "app"
+  ],
   "engines": {
     "node": ">=0.10.0",
     "npm": ">=1.2.10"
