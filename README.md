@@ -1,3 +1,7 @@
+# OBSOLETE
+
+Please use the [Project Starter Kit](http://ft-interactive.github.io/) instead.
+
 # FT News App Generator [![Build Status](https://secure.travis-ci.org/ft-interactive/generator-ftnewsapp.png?branch=master)](http://travis-ci.org/ft-interactive/generator-ftnewsapp)
 
 Yeoman generator that scaffolds out an FT interactive graphic/news app.
